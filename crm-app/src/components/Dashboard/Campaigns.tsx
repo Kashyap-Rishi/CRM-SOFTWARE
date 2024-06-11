@@ -24,7 +24,7 @@ const Campaigns: React.FC = () => {
 
   const { data: campaigns } = contextValue;
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
 import { Grid, Card, CardContent, Typography,useMediaQuery, Theme } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line, } from 'recharts';
 import { AllLogDataContext } from '../../hooks/AllLogContext';

@@ -14,13 +14,16 @@ async function consumeMessagesFromQueue(exchange, queue, routingKey, callback) {
       if (message !== null) {
         const data = JSON.parse(message.content.toString());
         console.log(` [x] Received message from ${queue} queue:`, data);
-        console.log("Hello",routingKey,exchange);
+        console.log("Hello", routingKey, exchange);
         await callback(data);
         channel.ack(message);
       }
     });
   } catch (error) {
-    console.error(`Error consuming messages from ${queue} queue:`, error.message);
+    console.error(
+      `Error consuming messages from ${queue} queue:`,
+      error.message
+    );
   }
 }
 

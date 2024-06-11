@@ -3,27 +3,47 @@ const processCustomerMessage = require("../message_broker/consumer/customerConsu
 const processOrderMessage = require("../message_broker/consumer/orderConsumer");
 const connectToDatabase = require("./db");
 const mongoose = require("mongoose");
-const {processCommunicationLogMessage,processDeliveryReceiptMessage} = require("../message_broker/consumer/logConsumer");
+const {
+  processCommunicationLogMessage,
+  processDeliveryReceiptMessage,
+} = require("../message_broker/consumer/logConsumer");
 
 function isDatabaseConnected() {
-    return mongoose.connection.readyState === 1;
-  }
-
+  return mongoose.connection.readyState === 1;
+}
 
 async function startConsumers() {
-    if (!isDatabaseConnected()) {
-      await connectToDatabase();
-    }
-       
-    consumeMessagesFromQueue("customerExchange", "customer_queue", "customer.*", processCustomerMessage);
-     
-    consumeMessagesFromQueue("orderExchange", "order_queue", "order.*", processOrderMessage);
-
-    consumeMessagesFromQueue("logExchange", "communicationLog_queue", "log.*", processCommunicationLogMessage);
-
-    consumeMessagesFromQueue("deliveryReceiptExchange", "receipt_queue", "deliveryReceipt.*", processDeliveryReceiptMessage);
-
+  if (!isDatabaseConnected()) {
+    await connectToDatabase();
   }
-  
-  module.exports = startConsumers;
-  
+
+  consumeMessagesFromQueue(
+    "customerExchange",
+    "customer_queue",
+    "customer.*",
+    processCustomerMessage
+  );
+
+  consumeMessagesFromQueue(
+    "orderExchange",
+    "order_queue",
+    "order.*",
+    processOrderMessage
+  );
+
+  consumeMessagesFromQueue(
+    "logExchange",
+    "communicationLog_queue",
+    "log.*",
+    processCommunicationLogMessage
+  );
+
+  consumeMessagesFromQueue(
+    "deliveryReceiptExchange",
+    "receipt_queue",
+    "deliveryReceipt.*",
+    processDeliveryReceiptMessage
+  );
+}
+
+module.exports = startConsumers;

@@ -6,7 +6,7 @@ async function sendMessageToQueue(exchange, routingKey, data) {
     console.log("Connecting to RabbitMQ...");
 
     const connection = await amqp.connect(RABBITMQ_URI, {
-      heartbeat: 30
+      heartbeat: 30,
     });
     const channel = await connection.createChannel();
 
@@ -22,9 +22,11 @@ async function sendMessageToQueue(exchange, routingKey, data) {
     await channel.close();
     await connection.close();
   } catch (error) {
-    console.error(`Error sending message with routing key ${routingKey}:`, error.message);
+    console.error(
+      `Error sending message with routing key ${routingKey}:`,
+      error.message
+    );
   }
 }
 
 module.exports = sendMessageToQueue;
-

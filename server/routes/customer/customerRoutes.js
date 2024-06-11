@@ -1,10 +1,12 @@
 const express = require("express");
-const {createCustomer,fetchAllCustomer} =require("../../controllers/customer/customerController");
+const {
+  createCustomer,
+  fetchAllCustomer,
+} = require("../../controllers/customer/customerController");
 
-const router=express.Router();
+const router = express.Router();
 
-router.post("/create-customer",createCustomer);
-router.get("/fetch-customer",fetchAllCustomer);
+router.post("/create-customer", createCustomer);
+router.get("/fetch-customer", fetchAllCustomer);
 
-
-module.exports= router;
+module.exports = router;

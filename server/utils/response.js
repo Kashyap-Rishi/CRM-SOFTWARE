@@ -1,9 +1,9 @@
-   const sendErrorResponse = (res, statusCode, message) => {
-    return res.status(statusCode).json({ error: message });
-  };
-  
-   const sendSuccessResponse = (res, statusCode, message) => {
-    return res.status(statusCode).json({ message });
-  };
+const sendErrorResponse = (res, statusCode, message) => {
+  return res.status(statusCode).json({ error: message });
+};
 
-  module.exports={sendSuccessResponse,sendErrorResponse};
+const sendSuccessResponse = (res, statusCode, message) => {
+  return res.status(statusCode).json({ message });
+};
+
+module.exports = { sendSuccessResponse, sendErrorResponse };

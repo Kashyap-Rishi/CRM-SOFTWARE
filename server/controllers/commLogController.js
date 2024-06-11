@@ -1,7 +1,7 @@
 const { sendErrorResponse, sendSuccessResponse } = require("../utils/response");
 const sendMessageToQueue = require("../message_broker/producer/producer");
 const Customer = require("../models/customer");
-const CommunicationLog = require('../models/commLog');
+const CommunicationLog = require("../models/commLog");
 const { validateCommunicationLogData } = require("../utils/validation");
 
 const findCustomersByRules = async (rules) => {
@@ -18,7 +18,7 @@ const findCustomersByRules = async (rules) => {
 const constructQueryFromRules = (rules) => {
   const query = {};
 
-  rules.forEach(rule => {
+  rules.forEach((rule) => {
     const { field, operator, value } = rule;
 
     switch (operator) {
@@ -45,9 +45,9 @@ const createCommunicationLog = async (req, res) => {
 
     const campaignSize = customers.length;
 
-    const customerEntries = customers.map(customer => ({
+    const customerEntries = customers.map((customer) => ({
       customer: customer._id,
-      status: "PENDING"
+      status: "PENDING",
     }));
 
     const communicationLogData = {
@@ -57,24 +57,21 @@ const createCommunicationLog = async (req, res) => {
       rules,
       logic,
       customers: customerEntries,
-      campaignStatus: "PENDING"
+      campaignStatus: "PENDING",
     };
 
     const errors = validateCommunicationLogData(communicationLogData);
     if (errors.length > 0) {
       return sendErrorResponse(res, 400, errors.join(", "));
     }
-await sendMessageToQueue("logExchange", "log.create", communicationLogData);
+    await sendMessageToQueue("logExchange", "log.create", communicationLogData);
 
-    
     sendSuccessResponse(res, 201, "In process");
   } catch (error) {
     console.error("Error creating communication log:", error);
     sendErrorResponse(res, 500, "Internal server error");
   }
 };
-
-
 
 const fetchAllCommunicationLog = async (req, res) => {
   try {
@@ -87,4 +84,4 @@ const fetchAllCommunicationLog = async (req, res) => {
   }
 };
 
-module.exports = {createCommunicationLog,fetchAllCommunicationLog};
+module.exports = { createCommunicationLog, fetchAllCommunicationLog };

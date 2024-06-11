@@ -38,11 +38,11 @@ interface CampaignCreationProps {
   handleClose: () => void;
 }
 
-
-const personalizedMessages = ["Hi Sarah, enjoy 15% off as a token of our appreciation for your continued support!",
- "Hello John, we're offering you 20% off your next purchase as a thank you for being an awesome customer!",
+const personalizedMessages = [
+  "Hi Sarah, enjoy 15% off as a token of our appreciation for your continued support!",
+  "Hello John, we're offering you 20% off your next purchase as a thank you for being an awesome customer!",
   "Hey Lisa, here's a special discount of 10% off your next order, just for being amazing!",
-  "Hey David, we're extending a 20% discount your way as a gesture of gratitude for your business!"
+  "Hey David, we're extending a 20% discount your way as a gesture of gratitude for your business!",
 ];
 
 const CampaignCreation: React.FC<CampaignCreationProps> = ({
@@ -191,13 +191,15 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
             </Step>
           </Stepper>
           {loading ? (
-  <Box display="flex" flexDirection="column" alignItems="center">
-    <CircularProgress />
-    <Typography variant="h6" align="center" sx={{ mt: 2 }}>
-      {step === 1 ? "Creating audience, please wait..." : "Sending campaigns, please wait..."}
-    </Typography>
-  </Box>
-) : (
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <CircularProgress />
+              <Typography variant="h6" align="center" sx={{ mt: 2 }}>
+                {step === 1
+                  ? "Creating audience, please wait..."
+                  : "Sending campaigns, please wait..."}
+              </Typography>
+            </Box>
+          ) : (
             <form onSubmit={formik.handleSubmit}>
               {step === 1 && (
                 <Grid container spacing={2}>
@@ -238,110 +240,119 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
                     />
                   </Grid>
                   <Grid item xs={12}>
-  {rules.map((rule, index) => (
-    <Box key={index} mb={2} p={2} border={1} borderRadius={4}>
-      <Grid container spacing={2} alignItems="center">
-        {/* Field */}
-        <Grid item>
-          <FormControl component="fieldset" margin="normal">
-            <FormLabel component="legend">Field</FormLabel>
-            <RadioGroup
-              row
-              name={`rules[${index}].field`}
-              value={rule.field}
-              onChange={(e) =>
-                handleRuleChange(index, "field", e.target.value)
-              }
-            >
-              <FormControlLabel
-                value="totalSpends"
-                control={<Radio />}
-                label="totalSpends"
-              />
-              <FormControlLabel
-                value="maxVisits"
-                control={<Radio />}
-                label="maxVisits"
-              />
-              <FormControlLabel
-                value="lastVisit"
-                control={<Radio />}
-                label="lastVisit (in days)"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-        {/* Operator */}
-        <Grid item>
-          <FormControl component="fieldset" margin="normal">
-            <FormLabel component="legend">Operator</FormLabel>
-            <RadioGroup
-           
-              row
-              name={`rules[${index}].operator`}
-              value={rule.operator}
-              onChange={(e) =>
-                handleRuleChange(index, "operator", e.target.value)
-              }
-            >
-              <FormControlLabel
-                value=">"
-                control={<Radio />}
-                label=">"
-              />
-              <FormControlLabel
-                value="<"
-                control={<Radio />}
-                label="<"
-              />
-              <FormControlLabel
-                value="="
-                control={<Radio/>}
-                label="="
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
+                    {rules.map((rule, index) => (
+                      <Box key={index} mb={2} p={2} border={1} borderRadius={4}>
+                        <Grid container spacing={2} alignItems="center">
+                    
+                          <Grid item>
+                            <FormControl component="fieldset" margin="normal">
+                              <FormLabel component="legend">Field</FormLabel>
+                              <RadioGroup
+                                row
+                                name={`rules[${index}].field`}
+                                value={rule.field}
+                                onChange={(e) =>
+                                  handleRuleChange(
+                                    index,
+                                    "field",
+                                    e.target.value
+                                  )
+                                }
+                              >
+                                <FormControlLabel
+                                  value="totalSpends"
+                                  control={<Radio />}
+                                  label="totalSpends"
+                                />
+                                <FormControlLabel
+                                  value="maxVisits"
+                                  control={<Radio />}
+                                  label="maxVisits"
+                                />
+                                <FormControlLabel
+                                  value="lastVisit"
+                                  control={<Radio />}
+                                  label="lastVisit (in days)"
+                                />
+                              </RadioGroup>
+                            </FormControl>
+                          </Grid>
+                       
+                          <Grid item>
+                            <FormControl component="fieldset" margin="normal">
+                              <FormLabel component="legend">Operator</FormLabel>
+                              <RadioGroup
+                                row
+                                name={`rules[${index}].operator`}
+                                value={rule.operator}
+                                onChange={(e) =>
+                                  handleRuleChange(
+                                    index,
+                                    "operator",
+                                    e.target.value
+                                  )
+                                }
+                              >
+                                <FormControlLabel
+                                  value=">"
+                                  control={<Radio />}
+                                  label=">"
+                                />
+                                <FormControlLabel
+                                  value="<"
+                                  control={<Radio />}
+                                  label="<"
+                                />
+                                <FormControlLabel
+                                  value="="
+                                  control={<Radio />}
+                                  label="="
+                                />
+                              </RadioGroup>
+                            </FormControl>
+                          </Grid>
 
-        <Grid item>
-          <TextField
-            fullWidth
-            label="Value"
-            name={`rules[${index}].value`}
-            type="number"
-            value={rule.value}
-            onChange={(e) =>
-              handleRuleChange(index, "value", e.target.value)
-            }
-            required
-          />
-        </Grid>
-        {rules.length > 1 && (
-          <Grid item>
-            <IconButton
-              aria-label="delete"
-              onClick={() => removeRule(index)}
-              sx={{ mt: 2 }}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Grid>
-        )}
-      </Grid>
-    </Box>
-  ))}
-  <Button
-    variant="contained"
-    onClick={addRule}
-    sx={{ mt: 2, backgroundColor:'#7AB2B2',
-    '&:hover': {
-      backgroundColor: '#4D869C', 
-    } }}
-    
-  >
-    Add Rule
-  </Button>
-</Grid>
+                          <Grid item>
+                            <TextField
+                              fullWidth
+                              label="Value"
+                              name={`rules[${index}].value`}
+                              type="number"
+                              value={rule.value}
+                              onChange={(e) =>
+                                handleRuleChange(index, "value", e.target.value)
+                              }
+                              required
+                            />
+                          </Grid>
+                          {rules.length > 1 && (
+                            <Grid item>
+                              <IconButton
+                                aria-label="delete"
+                                onClick={() => removeRule(index)}
+                                sx={{ mt: 2 }}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Grid>
+                          )}
+                        </Grid>
+                      </Box>
+                    ))}
+                    <Button
+                      variant="contained"
+                      onClick={addRule}
+                      sx={{
+                        mt: 2,
+                        backgroundColor: "#7AB2B2",
+                        "&:hover": {
+                          backgroundColor: "#4D869C",
+                        },
+                      }}
+                    >
+                      Add Rule
+                    </Button>
+                  </Grid>
 
                   <Grid item xs={12}>
                     <FormControl component="fieldset" margin="normal">
@@ -406,10 +417,13 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
                 type="submit"
                 variant="contained"
                 color="primary"
-                sx={{ mt: 2,    backgroundColor:'#7AB2B2',
-                '&:hover': {
-                  backgroundColor: '#4D869C', 
-                } }}
+                sx={{
+                  mt: 2,
+                  backgroundColor: "#7AB2B2",
+                  "&:hover": {
+                    backgroundColor: "#4D869C",
+                  },
+                }}
               >
                 {step === 2 ? "Submit" : "Next"}
               </Button>
@@ -446,4 +460,3 @@ const StepTwoSchema = Yup.object().shape({
 });
 
 export default CampaignCreation;
-

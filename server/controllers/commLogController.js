@@ -64,9 +64,9 @@ const createCommunicationLog = async (req, res) => {
     if (errors.length > 0) {
       return sendErrorResponse(res, 400, errors.join(", "));
     }
+await sendMessageToQueue("logExchange", "log.create", communicationLogData);
 
-    await sendMessageToQueue("logExchange", "log.create", communicationLogData);
-
+    
     sendSuccessResponse(res, 201, "In process");
   } catch (error) {
     console.error("Error creating communication log:", error);

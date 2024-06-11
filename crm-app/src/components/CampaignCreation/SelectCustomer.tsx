@@ -71,7 +71,7 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
         if (Object.keys(formik.errors).length === 0) {
           setLoading(true);
           axios
-            .post("http://localhost:8000/api/log/create-log", {
+            .post("https://crm-x.onrender.com/api/log/create-log", {
               campaignName: values.campaignName,
               campaignDescription: values.campaignDescription,
               rules: values.rules,
@@ -92,7 +92,7 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
         }
       } else if (step === 2) {
         axios
-          .post("http://localhost:8000/api/log/template", {
+          .post("https://crm-x.onrender.com/api/log/template", {
             selectedMessage: values.selectedMessage,
             campaignName: values.campaignName,
           })

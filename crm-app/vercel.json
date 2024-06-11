@@ -1,0 +1,28 @@
+{
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/" }
+    ],
+    "redirects": [
+      {
+        "source": "/api/customer/fetch-customer",
+        "destination": "https://crm-x.onrender.com/api/customer/fetch-customer",
+        "permanent": false
+      },
+      {
+        "source": "/api/log/fetch-log",
+        "destination": "https://crm-x.onrender.com/api/log/fetch-log",
+        "permanent": false
+      },
+      {
+        "source": "/api/log/create-log",
+        "destination": "https://crm-x.onrender.com/api/log/create-log",
+        "permanent": false
+      },
+      {
+        "source": "/api/log/template",
+        "destination": "https://crm-x.onrender.com/api/log/template",
+        "permanent": false
+      }
+    ]
+  }
+  

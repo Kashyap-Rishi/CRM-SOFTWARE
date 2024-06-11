@@ -4,9 +4,9 @@ const Customer = require("../models/customer");
 const CommunicationLog = require("../models/commLog");
 const { validateCommunicationLogData } = require("../utils/validation");
 
-const findCustomersByRules = async (rules) => {
+const findCustomersByRules = async (rules, logic) => { 
   try {
-    const query = constructQueryFromRules(rules);
+    const query = constructQueryFromRules(rules, logic);
     const customers = await Customer.find(query);
     return customers;
   } catch (error) {
@@ -19,23 +19,7 @@ const constructQueryFromRules = (rules, logic) => {
   const query = {};
 
   if (logic === "AND") {
-    rules.forEach((rule) => {
-      const { field, operator, value } = rule;
-
-      switch (operator) {
-        case ">":
-          query[field] = { $gt: value };
-          break;
-        case "<":
-          query[field] = { $lt: value };
-          break;
-        case "=":
-          query[field] = value;
-          break;
-      }
-    });
-  } else if (logic === "OR") {
-    const orConditions = [];
+    const andConditions = [];
 
     rules.forEach((rule) => {
       const { field, operator, value } = rule;
@@ -53,7 +37,28 @@ const constructQueryFromRules = (rules, logic) => {
           break;
       }
 
-      orConditions.push(condition);
+      andConditions.push(condition);
+    });
+
+    Object.assign(query, ...andConditions);
+  } else if (logic === "OR") {
+    const orConditions = rules.map((rule) => {
+      const { field, operator, value } = rule;
+      const condition = {};
+
+      switch (operator) {
+        case ">":
+          condition[field] = { $gt: value };
+          break;
+        case "<":
+          condition[field] = { $lt: value };
+          break;
+        case "=":
+          condition[field] = value;
+          break;
+      }
+
+      return condition;
     });
 
     query["$or"] = orConditions;
@@ -62,12 +67,11 @@ const constructQueryFromRules = (rules, logic) => {
   return query;
 };
 
-
 const createCommunicationLog = async (req, res) => {
   try {
     const { campaignName, campaignDescription, rules, logic } = req.body;
 
-    const customers = await findCustomersByRules(rules);
+    const customers = await findCustomersByRules(rules, logic); 
 
     const campaignSize = customers.length;
 

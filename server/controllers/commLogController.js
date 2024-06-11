@@ -66,7 +66,7 @@ const createCommunicationLog = async (req, res) => {
     }
     await sendMessageToQueue("logExchange", "log.create", communicationLogData);
 
-    sendSuccessResponse(res, 201, "In process");
+    sendSuccessResponse(res, 201, campaignSize);
   } catch (error) {
     console.error("Error creating communication log:", error);
     sendErrorResponse(res, 500, "Internal server error");

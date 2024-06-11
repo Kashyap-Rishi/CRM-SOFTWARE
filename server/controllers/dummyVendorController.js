@@ -13,7 +13,7 @@ const dummyVendor = async (req, res) => {
     const logId = campaign._id;
 
     const response = await axios.post(
-      "http://localhost:8000/api/log/delivery-receipt",
+      "http://crm-x.onrender.com/api/log/delivery-receipt",
       {
         logId,
         message,

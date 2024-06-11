@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Button,
   Table,
@@ -29,6 +29,7 @@ type SuccessRate =
 const Campaigns: React.FC = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortedCampaigns, setSortedCampaigns] = useState<any[]>([]);
   const [open, setOpen] = useState(false);
 
   const contextValue = useContext(AllLogDataContext);
@@ -89,6 +90,15 @@ const Campaigns: React.FC = () => {
     (campaign) => campaign.campaignStatus === "SENT"
   );
 
+  useEffect(() => {
+    const sortedCampaigns = [...sentCampaigns].sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return dateB - dateA;
+    });
+    setSortedCampaigns(sortedCampaigns);
+  }, [sentCampaigns]);
+  
   return (
     <Box>
       <Box
@@ -150,7 +160,7 @@ const Campaigns: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sentCampaigns
+            {sortedCampaigns
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((campaign, index) => {
                 const successRate = calculateSuccessRate(campaign);
@@ -220,7 +230,7 @@ const Campaigns: React.FC = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={sentCampaigns.length}
+            count={sortedCampaigns.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

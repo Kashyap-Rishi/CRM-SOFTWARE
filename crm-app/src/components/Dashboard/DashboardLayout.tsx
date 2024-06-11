@@ -90,7 +90,7 @@ const DashboardLayout: React.FC = () => {
           sx={{
             "&:hover": { backgroundColor: "#e0e0e0" },
             borderBottom: "1px solid black",
-          }} // Change background color on hover
+          }} 
           onClick={() => {
             if (isMobile) {
               handleDrawerToggle();

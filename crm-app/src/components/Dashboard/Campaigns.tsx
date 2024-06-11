@@ -213,7 +213,7 @@ const Campaigns: React.FC = () => {
         </Table>
         <Box
           display="flex"
-          justifyContent="space-between"
+          justifyContent="center"
           alignItems="center"
           p={2}
         >

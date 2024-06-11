@@ -24,6 +24,8 @@ import {
   FormLabel,
   IconButton,
   CircularProgress,
+  useMediaQuery,
+  Theme,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -56,6 +58,9 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
     { field: "totalSpends", operator: ">", value: "" },
   ]);
   const [loading, setLoading] = useState(false);
+  const isMobile = useMediaQuery((theme: Theme) =>
+  theme.breakpoints.down("sm")
+);
 
   const formik = useFormik({
     initialValues: {
@@ -242,7 +247,7 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
                   <Grid item xs={12}>
                     {rules.map((rule, index) => (
                       <Box key={index} mb={2} p={2} border={1} borderRadius={4}>
-                        <Grid container spacing={2} alignItems="center">
+                        <Grid container alignItems="center" sx={{ gap: isMobile ? 2 : 8}}>
                     
                           <Grid item>
                             <FormControl component="fieldset" margin="normal">

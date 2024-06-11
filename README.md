@@ -1,6 +1,6 @@
 # CRM-SOFTWARE
 
-A tool for creating customized campaigns and send to customers at once.
+A software tool for creating campaigns and sending personalized messages to a specific group of customers filtered by certain rules at once.
 
 
 ## Installation

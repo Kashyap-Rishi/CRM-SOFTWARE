@@ -91,6 +91,7 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
           setErrorMessage("Please correct the errors in the form.");
         }
       } else if (step === 2) {
+        setLoading(true);
         axios
           .post("https://crm-x.onrender.com/api/log/template", {
             selectedMessage: values.selectedMessage,
@@ -100,9 +101,11 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
             console.log("Step 2 success:", response);
             resetForm();
             handleClose();
+            setLoading(false);
           })
           .catch((error: any) => {
             console.error("Step 2 failed:", error);
+            setLoading(false);
             setErrorMessage("Step 2 submission failed");
           });
       }
@@ -188,13 +191,13 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
             </Step>
           </Stepper>
           {loading ? (
-            <Box display="flex" flexDirection="column" alignItems="center">
-              <CircularProgress />
-              <Typography variant="h6" align="center" sx={{ mt: 2 }}>
-                Creating audience, please wait...
-              </Typography>
-            </Box>
-          ) : (
+  <Box display="flex" flexDirection="column" alignItems="center">
+    <CircularProgress />
+    <Typography variant="h6" align="center" sx={{ mt: 2 }}>
+      {step === 1 ? "Creating audience, please wait..." : "Sending campaigns, please wait..."}
+    </Typography>
+  </Box>
+) : (
             <form onSubmit={formik.handleSubmit}>
               {step === 1 && (
                 <Grid container spacing={2}>
@@ -263,7 +266,7 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
               <FormControlLabel
                 value="lastVisit"
                 control={<Radio />}
-                label="lastVisit"
+                label="lastVisit (in days)"
               />
             </RadioGroup>
           </FormControl>

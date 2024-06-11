@@ -15,27 +15,53 @@ const findCustomersByRules = async (rules) => {
   }
 };
 
-const constructQueryFromRules = (rules) => {
+const constructQueryFromRules = (rules, logic) => {
   const query = {};
 
-  rules.forEach((rule) => {
-    const { field, operator, value } = rule;
+  if (logic === "AND") {
+    rules.forEach((rule) => {
+      const { field, operator, value } = rule;
 
-    switch (operator) {
-      case ">":
-        query[field] = { $gt: value };
-        break;
-      case "<":
-        query[field] = { $lt: value };
-        break;
-      case "=":
-        query[field] = value;
-        break;
-    }
-  });
+      switch (operator) {
+        case ">":
+          query[field] = { $gt: value };
+          break;
+        case "<":
+          query[field] = { $lt: value };
+          break;
+        case "=":
+          query[field] = value;
+          break;
+      }
+    });
+  } else if (logic === "OR") {
+    const orConditions = [];
+
+    rules.forEach((rule) => {
+      const { field, operator, value } = rule;
+      const condition = {};
+
+      switch (operator) {
+        case ">":
+          condition[field] = { $gt: value };
+          break;
+        case "<":
+          condition[field] = { $lt: value };
+          break;
+        case "=":
+          condition[field] = value;
+          break;
+      }
+
+      orConditions.push(condition);
+    });
+
+    query["$or"] = orConditions;
+  }
 
   return query;
 };
+
 
 const createCommunicationLog = async (req, res) => {
   try {

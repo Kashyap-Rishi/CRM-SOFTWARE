@@ -261,9 +261,9 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
                 label="maxVisits"
               />
               <FormControlLabel
-                value="lastVisits"
+                value="lastVisit"
                 control={<Radio />}
-                label="lastVisits"
+                label="lastVisit"
               />
             </RadioGroup>
           </FormControl>
@@ -299,7 +299,7 @@ const CampaignCreation: React.FC<CampaignCreationProps> = ({
             </RadioGroup>
           </FormControl>
         </Grid>
-        {/* Value */}
+
         <Grid item>
           <TextField
             fullWidth

@@ -15,7 +15,7 @@ const AllCustomerDataProvider: FC<AllCustomerDataProviderProps> = ({ children })
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://crm-x.onrender.com/api/customer/fetch-customer');
+      const response = await fetch('http://localhost:8000/api/customer/fetch-customer');
       const jsonData = await response.json();
       setData(jsonData.message);
       console.log(data);

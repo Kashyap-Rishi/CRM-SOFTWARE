@@ -4,7 +4,7 @@ const Customer = require("../models/customer");
 const CommunicationLog = require("../models/commLog");
 const { validateCommunicationLogData } = require("../utils/validation");
 
-const findCustomersByRules = async (rules, logic) => { 
+const findCustomersByRules = async (rules, logic) => {
   try {
     const query = constructQueryFromRules(rules, logic);
     const customers = await Customer.find(query);
@@ -71,7 +71,7 @@ const createCommunicationLog = async (req, res) => {
   try {
     const { campaignName, campaignDescription, rules, logic } = req.body;
 
-    const customers = await findCustomersByRules(rules, logic); 
+    const customers = await findCustomersByRules(rules, logic);
 
     const campaignSize = customers.length;
 

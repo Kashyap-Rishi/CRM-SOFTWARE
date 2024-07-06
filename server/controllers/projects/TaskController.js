@@ -1,5 +1,5 @@
-const Project = require('../../models/Project');
-const User = require('../../models/User');
+const Project = require('../../models/project');
+const User = require('../../models/user');
 
 const addTaskToProject = async (req, res) => {
   const { projectId } = req.params; 

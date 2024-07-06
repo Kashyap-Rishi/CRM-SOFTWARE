@@ -2,7 +2,7 @@ const {
   sendErrorResponse,
   sendSuccessResponse,
 } = require("../../utils/response");
-const Project = require("../../models/Project");
+const Project = require("../../models/project");
 const User = require("../../models/user");
 
 const createProject = async (req, res) => {

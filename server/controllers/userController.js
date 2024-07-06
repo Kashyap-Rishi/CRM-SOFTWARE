@@ -1,5 +1,5 @@
 const { sendErrorResponse, sendSuccessResponse } = require("../utils/response");
-const User = require("../models/User");
+const User = require("../models/user");
 
 const addUsers = async (req, res) => {
   const users = req.body;

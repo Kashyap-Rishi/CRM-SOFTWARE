@@ -20,7 +20,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { styled } from "@mui/system";
-import { BarChartOutlined, CampaignOutlined } from "@mui/icons-material";
+import { BarChartOutlined, CampaignOutlined, AccountTreeOutlined } from "@mui/icons-material";
 
 const drawerWidth = 240;
 
@@ -83,6 +83,25 @@ const DashboardLayout: React.FC = () => {
       }}
     >
       <List>
+      <ListItem
+          button
+          component={NavLink}
+          to={`/dashboard/${username}/projects`}
+          sx={{
+            "&:hover": { backgroundColor: "#e0e0e0" },
+            borderBottom: "1px solid black",
+          }} 
+          onClick={() => {
+            if (isMobile) {
+              handleDrawerToggle();
+            }
+          }}
+        >
+          <ListItemIcon>
+            <AccountTreeOutlined />
+          </ListItemIcon>
+          <ListItemText primary="Projects" />
+        </ListItem>
         <ListItem
           button
           component={NavLink}

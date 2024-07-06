@@ -98,7 +98,7 @@ const Campaigns: React.FC = () => {
     });
     setSortedCampaigns(sortedCampaigns);
   }, [sentCampaigns]);
-  
+
   return (
     <Box>
       <Box
@@ -221,12 +221,7 @@ const Campaigns: React.FC = () => {
               })}
           </TableBody>
         </Table>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          p={2}
-        >
+        <Box display="flex" justifyContent="center" alignItems="center" p={2}>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"

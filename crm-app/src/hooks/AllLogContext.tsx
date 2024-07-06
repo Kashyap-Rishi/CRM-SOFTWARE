@@ -15,7 +15,7 @@ const AllLogDataProvider: FC<AllLogDataProviderProps> = ({ children }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('https://crm-x.onrender.com/api/log/fetch-log');
+      const response = await fetch('http://localhost:8000/api/log/fetch-log');
       const jsonData = await response.json();
       setData(jsonData.message);
       console.log(data);

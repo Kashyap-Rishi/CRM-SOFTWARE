@@ -1,5 +1,5 @@
 const express = require("express");
-const { createProject, fetchAllProjects, updateCompleted, fetchProjectById } = require("../../controllers/projects/ProjectCOntroller");
+const { createProject, fetchAllProjects, updateCompleted, fetchProjectById } = require("../../controllers/projects/ProjectController");
 const { addTaskToProject } = require("../../controllers/projects/TaskController");
 
 

@@ -29,6 +29,9 @@ const AllProjectDataProvider: FC<AllProjectDataProviderProps> = ({ children }) =
 
   useEffect(() => {
     fetchData(); 
+    const intervalId = setInterval(fetchData, 6000); 
+
+    return () => clearInterval(intervalId); 
   }, []);
 
   const contextValue = useMemo(() => ({ data }), [data]);

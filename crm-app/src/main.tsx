@@ -7,6 +7,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AllCustomerDataProvider } from './hooks/AllCustomerContext';
 import { AllEmployeeDataProvider } from './hooks/AllEmployeeContext';
 import { AllProjectDataProvider } from './hooks/AllProjectContext';
+import { ProjectDataProvider } from './hooks/SingleProjectContext';
 
 const theme = createTheme();
 
@@ -17,9 +18,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 <AllLogDataProvider>
   <AllEmployeeDataProvider>
     <AllProjectDataProvider>
+      <ProjectDataProvider>
 <ThemeProvider theme={theme}>
     <App />
   </ThemeProvider>,
+  </ProjectDataProvider>
   </AllProjectDataProvider>
   </AllEmployeeDataProvider>
     </AllLogDataProvider>

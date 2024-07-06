@@ -1,7 +1,14 @@
-import React from 'react';
-import { Card, CardContent, Typography, CardActions, IconButton, Box } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import React from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  CardActions,
+  IconButton,
+  Box,
+} from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface TaskCardProps {
   name: string;
@@ -11,17 +18,31 @@ interface TaskCardProps {
   completed: boolean;
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ name, description, deadline, users, completed }) => {
+const TaskCard: React.FC<TaskCardProps> = ({
+  name,
+  description,
+  deadline,
+  users,
+  completed,
+}) => {
   return (
     <Card variant="outlined" sx={{ marginBottom: 2 }}>
       <CardContent>
         <Typography variant="h5" component="div" sx={{ marginBottom: 1 }}>
           {name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 1 }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ marginBottom: 1 }}
+        >
           {description}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 1 }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ marginBottom: 1 }}
+        >
           Deadline: {new Date(deadline).toLocaleString()}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -32,11 +53,11 @@ const TaskCard: React.FC<TaskCardProps> = ({ name, description, deadline, users,
         {completed ? (
           <Box
             sx={{
-              backgroundColor: '#A7DCA5',
-              color: 'white',
-              padding: '4px 8px',
+              backgroundColor: "#A7DCA5",
+              color: "white",
+              padding: "4px 8px",
               borderRadius: 2,
-              fontWeight: 'bold',
+              fontWeight: "bold",
             }}
           >
             Completed

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 import {
   useMediaQuery,
   Theme,
@@ -17,17 +17,17 @@ import {
   OutlinedInput,
   Chip,
   ListItemText,
-  CircularProgress
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { useParams } from 'react-router-dom';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-import { AllEmployeeDataContext } from '../../hooks/AllEmployeeContext';
-import { AllProjectDataContext } from '../../hooks/AllProjectContext';
-import ProjectCard from '../project/ProjectCard';
-import { common } from '@mui/material/colors';
+  CircularProgress,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { useParams } from "react-router-dom";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import { AllEmployeeDataContext } from "../../hooks/AllEmployeeContext";
+import { AllProjectDataContext } from "../../hooks/AllProjectContext";
+import ProjectCard from "../project/ProjectCard";
+import { common } from "@mui/material/colors";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -41,9 +41,11 @@ const MenuProps = {
 };
 
 const validationSchema = Yup.object({
-  projectName: Yup.string().required('Project Name is required'),
-  deadline: Yup.date().required('Deadline is required').nullable(),
-  users: Yup.array().min(1, 'Select at least one user').required('Users are required'),
+  projectName: Yup.string().required("Project Name is required"),
+  deadline: Yup.date().required("Deadline is required").nullable(),
+  users: Yup.array()
+    .min(1, "Select at least one user")
+    .required("Users are required"),
 });
 
 interface FormValues {
@@ -60,14 +62,21 @@ interface User {
 const ProjectManagement: React.FC = () => {
   const { username } = useParams<{ username: string }>();
   const [open, setOpen] = useState(false);
-  const [selectedSection, setSelectedSection] = useState<'completed' | 'pending' | 'due'>('pending');
+  const [selectedSection, setSelectedSection] = useState<
+    "completed" | "pending" | "due"
+  >("pending");
   const employeeContext = useContext(AllEmployeeDataContext);
   const projectContext = useContext(AllProjectDataContext);
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm")
   );
 
-  if (!employeeContext || employeeContext.data === null || !projectContext || projectContext.data === null) {
+  if (
+    !employeeContext ||
+    employeeContext.data === null ||
+    !projectContext ||
+    projectContext.data === null
+  ) {
     return <CircularProgress />;
   }
 
@@ -88,35 +97,41 @@ const ProjectManagement: React.FC = () => {
         ...values,
         deadline: new Date(values.deadline).toISOString(),
       };
-      const response = await axios.post('http://localhost:8000/api/project/create-project', formattedValues);
-      console.log('Project added successfully:', response.data);
+      const response = await axios.post(
+        "https://crm-x.onrender.com/api/project/create-project",
+        formattedValues
+      );
+      console.log("Project added successfully:", response.data);
       setOpen(false);
     } catch (error) {
-      console.error('Error adding project:', error);
+      console.error("Error adding project:", error);
     }
   };
 
   const getUserDetails = (userIds: string[]): User[] => {
-    return userIds.map((id) => {
-      const user = users.find((user: any) => user._id === id);
-      if (user) {
-        return { employeeId: user.employeeId, name: user.name };
-      }
-      return undefined;
-    }).filter((user): user is User => user !== undefined);
+    return userIds
+      .map((id) => {
+        const user = users.find((user: any) => user._id === id);
+        if (user) {
+          return { employeeId: user.employeeId, name: user.name };
+        }
+        return undefined;
+      })
+      .filter((user): user is User => user !== undefined);
   };
 
   const filteredProjects = projects.filter((project) => {
     const deadlinePassed = new Date(project.deadline) < new Date();
-    if (selectedSection === 'completed') return project.completed;
-    if (selectedSection === 'pending') return !project.completed && !deadlinePassed;
-    if (selectedSection === 'due') return !project.completed && deadlinePassed;
+    if (selectedSection === "completed") return project.completed;
+    if (selectedSection === "pending")
+      return !project.completed && !deadlinePassed;
+    if (selectedSection === "due") return !project.completed && deadlinePassed;
     return false;
   });
 
   return (
     <Box>
-          <Box
+      <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
@@ -141,7 +156,6 @@ const ProjectManagement: React.FC = () => {
             backgroundColor: "#7AB2B2",
             "&:hover": {
               backgroundColor: "#4D869C",
-           
             },
           }}
         >
@@ -150,48 +164,50 @@ const ProjectManagement: React.FC = () => {
       </Box>
       <Box sx={{ display: "flex", gap: 1 }}>
         <Button
-          variant={selectedSection === 'completed' ? 'contained' : 'outlined'}
-          onClick={() => setSelectedSection('completed')}
+          variant={selectedSection === "completed" ? "contained" : "outlined"}
+          onClick={() => setSelectedSection("completed")}
           sx={{
-            color: selectedSection === 'completed' ? 'common.white' : 'green',
-            backgroundColor: selectedSection === 'completed' ? '#A7DCA5' : 'inherit',
-            borderColor: 'green',
-            '&:hover': {
-              backgroundColor: '#A7DCA5',
-              borderColor:common.white,
-              color:common.white
+            color: selectedSection === "completed" ? "common.white" : "green",
+            backgroundColor:
+              selectedSection === "completed" ? "#A7DCA5" : "inherit",
+            borderColor: "green",
+            "&:hover": {
+              backgroundColor: "#A7DCA5",
+              borderColor: common.white,
+              color: common.white,
             },
           }}
         >
           Completed
         </Button>
         <Button
-          variant={selectedSection === 'pending' ? 'contained' : 'outlined'}
-          onClick={() => setSelectedSection('pending')}
+          variant={selectedSection === "pending" ? "contained" : "outlined"}
+          onClick={() => setSelectedSection("pending")}
           sx={{
-            color: selectedSection === 'pending' ? 'common.white' : 'orange',
-            backgroundColor: selectedSection === 'pending' ? '#FFDAB8' : 'inherit',
-            borderColor: 'orange',
-            '&:hover': {
-              backgroundColor: '#FFDAB8',
-              borderColor:common.white,
-              color:common.white
+            color: selectedSection === "pending" ? "common.white" : "orange",
+            backgroundColor:
+              selectedSection === "pending" ? "#FFDAB8" : "inherit",
+            borderColor: "orange",
+            "&:hover": {
+              backgroundColor: "#FFDAB8",
+              borderColor: common.white,
+              color: common.white,
             },
           }}
         >
           Pending
         </Button>
         <Button
-          variant={selectedSection === 'due' ? 'contained' : 'outlined'}
-          onClick={() => setSelectedSection('due')}
+          variant={selectedSection === "due" ? "contained" : "outlined"}
+          onClick={() => setSelectedSection("due")}
           sx={{
-            color: selectedSection === 'due' ? 'common.white' : 'red',
-            backgroundColor: selectedSection === 'due' ? '#FB726A' : 'inherit',
-            borderColor: 'red',
-            '&:hover': {
-              backgroundColor: '#FB726A',
-              borderColor:common.white,
-              color:common.white
+            color: selectedSection === "due" ? "common.white" : "red",
+            backgroundColor: selectedSection === "due" ? "#FB726A" : "inherit",
+            borderColor: "red",
+            "&:hover": {
+              backgroundColor: "#FB726A",
+              borderColor: common.white,
+              color: common.white,
             },
           }}
         >
@@ -204,7 +220,7 @@ const ProjectManagement: React.FC = () => {
           const projectUsers = getUserDetails(project.users);
           return (
             <ProjectCard
-             username={username}
+              username={username}
               key={project._id}
               task={project.tasks}
               projectName={project.name}
@@ -212,7 +228,6 @@ const ProjectManagement: React.FC = () => {
               deadline={project.deadline}
               users={projectUsers}
               projectId={project._id}
-              
             />
           );
         })}
@@ -223,14 +238,21 @@ const ProjectManagement: React.FC = () => {
         <DialogContent>
           <Formik
             initialValues={{
-              projectName: '',
-              deadline: '',
+              projectName: "",
+              deadline: "",
               users: [],
             }}
             validationSchema={validationSchema}
             onSubmit={handleAddProject}
           >
-            {({ values, handleChange, handleBlur, setFieldValue, touched, errors }) => (
+            {({
+              values,
+              handleChange,
+              handleBlur,
+              setFieldValue,
+              touched,
+              errors,
+            }) => (
               <Form>
                 <Field
                   as={TextField}
@@ -269,10 +291,12 @@ const ProjectManagement: React.FC = () => {
                     multiple
                     name="users"
                     value={values.users}
-                    onChange={(event) => setFieldValue('users', event.target.value as string[])}
+                    onChange={(event) =>
+                      setFieldValue("users", event.target.value as string[])
+                    }
                     input={<OutlinedInput label="Users" />}
                     renderValue={(selected) => (
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                         {(selected as string[]).map((value) => (
                           <Chip key={value} label={value} />
                         ))}
@@ -283,7 +307,9 @@ const ProjectManagement: React.FC = () => {
                   >
                     {users.map((user) => (
                       <MenuItem key={user.employeeId} value={user.employeeId}>
-                        <ListItemText primary={`${user.employeeId} (${user.name})`} />
+                        <ListItemText
+                          primary={`${user.employeeId} (${user.name})`}
+                        />
                       </MenuItem>
                     ))}
                   </Select>

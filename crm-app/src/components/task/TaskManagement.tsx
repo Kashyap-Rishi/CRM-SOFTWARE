@@ -1,20 +1,35 @@
-import React, { useState, useContext, useEffect } from 'react';
-import {   useMediaQuery,
-  Theme,Button, Dialog, DialogActions,Grid, DialogContent, DialogTitle, TextField, MenuItem, FormControl, InputLabel, Select, CircularProgress, Box } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { ProjectDataContext } from '../../hooks/SingleProjectContext';
-import { AllEmployeeDataContext } from '../../hooks/AllEmployeeContext';
-import TaskCard from './TaskCard';
+import React, { useState, useContext, useEffect } from "react";
+import {
+  useMediaQuery,
+  Theme,
+  Button,
+  Dialog,
+  DialogActions,
+  Grid,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  CircularProgress,
+  Box,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { ProjectDataContext } from "../../hooks/SingleProjectContext";
+import { AllEmployeeDataContext } from "../../hooks/AllEmployeeContext";
+import TaskCard from "./TaskCard";
 
 const validationSchema = Yup.object({
-  name: Yup.string().required('Task Name is required'),
-  description: Yup.string().required('Description is required'),
-  deadline: Yup.date().required('Deadline is required').nullable(),
-  assignedToEmployeeId: Yup.string().required('Assigned User is required'),
+  name: Yup.string().required("Task Name is required"),
+  description: Yup.string().required("Description is required"),
+  deadline: Yup.date().required("Deadline is required").nullable(),
+  assignedToEmployeeId: Yup.string().required("Assigned User is required"),
 });
 
 interface FormValues {
@@ -31,8 +46,8 @@ const CreateTaskButton: React.FC = () => {
   const employeeContext = useContext(AllEmployeeDataContext);
   const [loading, setLoading] = useState(true);
   const isMobile = useMediaQuery((theme: Theme) =>
-  theme.breakpoints.down("sm")
-);
+    theme.breakpoints.down("sm")
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,17 +59,25 @@ const CreateTaskButton: React.FC = () => {
     fetchData();
   }, [projectId, projectContext, loading]);
 
-  if (!employeeContext || employeeContext.data === null || loading || !projectContext || projectContext.projectData === null) {
+  if (
+    !employeeContext ||
+    employeeContext.data === null ||
+    loading ||
+    !projectContext ||
+    projectContext.projectData === null
+  ) {
     return <CircularProgress />;
   }
 
   const { data: users } = employeeContext;
   const { projectData } = projectContext;
 
-  console.log('Project Data:', projectData);
-  console.log('Users:', users);
+  console.log("Project Data:", projectData);
+  console.log("Users:", users);
 
-  const filteredUsers = users.filter((user: any) => projectData.users.includes(user._id));
+  const filteredUsers = users.filter((user: any) =>
+    projectData.users.includes(user._id)
+  );
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,11 +88,11 @@ const CreateTaskButton: React.FC = () => {
   };
   const getUserNameById = (employeeId: string) => {
     const user = filteredUsers.find((user) => user.employeeId === employeeId);
-    return user ? user.name : '';
+    return user ? user.name : "";
   };
   const getUserNameById2 = (employeeId: string) => {
-    const user = filteredUsers.find((user:any) => user._id === employeeId);
-    return user ? user.name : '';
+    const user = filteredUsers.find((user: any) => user._id === employeeId);
+    return user ? user.name : "";
   };
   const handleAddTask = async (values: FormValues) => {
     try {
@@ -77,19 +100,20 @@ const CreateTaskButton: React.FC = () => {
         ...values,
         deadline: new Date(values.deadline).toISOString(),
       };
-      const response = await axios.post(`http://localhost:8000/api/project/${projectId}/tasks`, formattedValues);
-      console.log('Task added successfully:', response.data);
+      const response = await axios.post(
+        `https://crm-x.onrender.com/api/project/${projectId}/tasks`,
+        formattedValues
+      );
+      console.log("Task added successfully:", response.data);
       setOpen(false);
     } catch (error) {
-      console.error('Error adding task:', error);
+      console.error("Error adding task:", error);
     }
   };
 
-
   return (
-    
     <Box>
-              <Box
+      <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
@@ -114,7 +138,6 @@ const CreateTaskButton: React.FC = () => {
             backgroundColor: "#7AB2B2",
             "&:hover": {
               backgroundColor: "#4D869C",
-           
             },
           }}
         >
@@ -127,10 +150,10 @@ const CreateTaskButton: React.FC = () => {
         <DialogContent>
           <Formik
             initialValues={{
-              name: '',
-              description: '',
-              deadline: '',
-              assignedToEmployeeId: '',
+              name: "",
+              description: "",
+              deadline: "",
+              assignedToEmployeeId: "",
             }}
             validationSchema={validationSchema}
             onSubmit={handleAddTask}
@@ -183,16 +206,23 @@ const CreateTaskButton: React.FC = () => {
                   helperText={touched.deadline && errors.deadline}
                 />
                 <FormControl fullWidth margin="dense">
-                  <InputLabel shrink={true} id="assignedToEmployeeId-label">Assigned Employee</InputLabel>
+                  <InputLabel shrink={true} id="assignedToEmployeeId-label">
+                    Assigned Employee
+                  </InputLabel>
                   <Select
                     labelId="assignedToEmployeeId-label"
                     name="assignedToEmployeeId"
                     value={values.assignedToEmployeeId}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={touched.assignedToEmployeeId && Boolean(errors.assignedToEmployeeId)}
+                    error={
+                      touched.assignedToEmployeeId &&
+                      Boolean(errors.assignedToEmployeeId)
+                    }
                     variant="outlined"
-                    renderValue={(selected) => getUserNameById(selected as string)}
+                    renderValue={(selected) =>
+                      getUserNameById(selected as string)
+                    }
                   >
                     {filteredUsers.map((user: any) => (
                       <MenuItem key={user.employeeId} value={user.employeeId}>
@@ -200,9 +230,10 @@ const CreateTaskButton: React.FC = () => {
                       </MenuItem>
                     ))}
                   </Select>
-                  {touched.assignedToEmployeeId && errors.assignedToEmployeeId && (
-                    <div>{errors.assignedToEmployeeId}</div>
-                  )}
+                  {touched.assignedToEmployeeId &&
+                    errors.assignedToEmployeeId && (
+                      <div>{errors.assignedToEmployeeId}</div>
+                    )}
                 </FormControl>
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
@@ -226,8 +257,7 @@ const CreateTaskButton: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-      </Box>
-    
+    </Box>
   );
 };
 

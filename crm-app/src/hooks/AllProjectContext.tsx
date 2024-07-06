@@ -1,37 +1,48 @@
-import { createContext, useState, useEffect, useMemo, ReactNode, FC } from 'react';
-
-
+import {
+  createContext,
+  useState,
+  useEffect,
+  useMemo,
+  ReactNode,
+  FC,
+} from "react";
 
 interface AllProjectDataContextType {
   data: any[] | null;
 }
 
-const AllProjectDataContext = createContext<AllProjectDataContextType | undefined>(undefined);
+const AllProjectDataContext = createContext<
+  AllProjectDataContextType | undefined
+>(undefined);
 
 interface AllProjectDataProviderProps {
   children: ReactNode;
 }
 
-const AllProjectDataProvider: FC<AllProjectDataProviderProps> = ({ children }) => {
+const AllProjectDataProvider: FC<AllProjectDataProviderProps> = ({
+  children,
+}) => {
   const [data, setData] = useState<any[] | null>(null);
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/project/fetch-project');
+      const response = await fetch(
+        "https://crm-x.onrender.com/api/project/fetch-project"
+      );
       const jsonData = await response.json();
-      // Assuming jsonData.message contains an array of employees
+
       setData(jsonData.message);
-      console.log(jsonData); // Log jsonData to understand its structure
+      console.log(jsonData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    fetchData(); 
-    const intervalId = setInterval(fetchData, 6000); 
+    fetchData();
+    const intervalId = setInterval(fetchData, 6000);
 
-    return () => clearInterval(intervalId); 
+    return () => clearInterval(intervalId);
   }, []);
 
   const contextValue = useMemo(() => ({ data }), [data]);

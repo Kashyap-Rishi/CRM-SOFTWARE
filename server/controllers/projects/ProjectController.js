@@ -1,24 +1,24 @@
-const { sendErrorResponse, sendSuccessResponse } = require("../../utils/response");
-const Project = require('../../models/Project');
-const User = require('../../models/user');
-
+const {
+  sendErrorResponse,
+  sendSuccessResponse,
+} = require("../../utils/response");
+const Project = require("../../models/Project");
+const User = require("../../models/user");
 
 const createProject = async (req, res) => {
   const { projectName, deadline, users } = req.body;
 
   try {
-   
     const allUsers = await User.find({ employeeId: { $in: users } });
 
     if (allUsers.length !== users.length) {
-      return res.status(400).json({ message: 'Some users not found' });
+      return res.status(400).json({ message: "Some users not found" });
     }
 
- 
     const project = new Project({
-      name:projectName,
+      name: projectName,
       deadline,
-      users: allUsers.map(user => user._id),
+      users: allUsers.map((user) => user._id),
     });
 
     const newProject = await project.save();
@@ -28,12 +28,11 @@ const createProject = async (req, res) => {
   }
 };
 
-
 const fetchAllProjects = async (req, res) => {
   try {
     const projects = await Project.find();
 
-    sendSuccessResponse(res, 200,projects);
+    sendSuccessResponse(res, 200, projects);
   } catch (error) {
     console.error("Error fetching customers:", error);
     sendErrorResponse(res, 500, "Internal server error");
@@ -41,13 +40,17 @@ const fetchAllProjects = async (req, res) => {
 };
 
 const updateCompleted = async (req, res) => {
-  const projectId = req.params.projectId; // Assuming projectId is passed as a route parameter
+  const projectId = req.params.projectId;
 
   try {
-    const project = await Project.findByIdAndUpdate(projectId, { completed: true }, { new: true });
+    const project = await Project.findByIdAndUpdate(
+      projectId,
+      { completed: true },
+      { new: true }
+    );
 
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
 
     sendSuccessResponse(res, 200, project);
@@ -58,22 +61,25 @@ const updateCompleted = async (req, res) => {
 };
 
 const fetchProjectById = async (req, res) => {
-  const projectId = req.params.projectId; // Assuming projectId is passed as a route parameter
+  const projectId = req.params.projectId;
 
   try {
     const project = await Project.findById(projectId);
 
     if (!project) {
-      return res.status(404).json({ message: 'Project not found' });
+      return res.status(404).json({ message: "Project not found" });
     }
 
-    // Optionally, you can format the response as needed
     sendSuccessResponse(res, 200, project);
   } catch (error) {
-    console.error('Error fetching project by ID:', error);
-    sendErrorResponse(res, 500, 'Internal server error');
+    console.error("Error fetching project by ID:", error);
+    sendErrorResponse(res, 500, "Internal server error");
   }
 };
 
-
-module.exports = { createProject, fetchAllProjects, updateCompleted,fetchProjectById,};
+module.exports = {
+  createProject,
+  fetchAllProjects,
+  updateCompleted,
+  fetchProjectById,
+};

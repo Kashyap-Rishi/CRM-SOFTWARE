@@ -18,6 +18,7 @@ const projectSchema = new mongoose.Schema({
   deadline: Date,
   tasks: [taskSchema],
   comments: [commentSchema],
+  completed: { type: Boolean, default: false },
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 

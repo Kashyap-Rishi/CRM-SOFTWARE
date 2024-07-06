@@ -1,23 +1,24 @@
+const { sendErrorResponse, sendSuccessResponse } = require("../../utils/response");
 const Project = require('../../models/Project');
 const User = require('../../models/user');
 
 
 const createProject = async (req, res) => {
-  const { name, deadline, userEmployeeIds } = req.body;
+  const { projectName, deadline, users } = req.body;
 
   try {
    
-    const users = await User.find({ employeeId: { $in: userEmployeeIds } });
+    const allUsers = await User.find({ employeeId: { $in: users } });
 
-    if (users.length !== userEmployeeIds.length) {
+    if (allUsers.length !== users.length) {
       return res.status(400).json({ message: 'Some users not found' });
     }
 
  
     const project = new Project({
-      name,
+      projectName,
       deadline,
-      users: users.map(user => user._id),
+      users: allUsers.map(user => user._id),
     });
 
     const newProject = await project.save();
@@ -28,4 +29,16 @@ const createProject = async (req, res) => {
 };
 
 
-module.exports = { createProject };
+const fetchAllProjects = async (req, res) => {
+  try {
+    const projects = await Project.find();
+
+    sendSuccessResponse(res, 200,projects);
+  } catch (error) {
+    console.error("Error fetching customers:", error);
+    sendErrorResponse(res, 500, "Internal server error");
+  }
+};
+
+
+module.exports = { createProject, fetchAllProjects};

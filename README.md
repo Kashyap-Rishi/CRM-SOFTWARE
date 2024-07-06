@@ -1,6 +1,6 @@
-# CRM-SOFTWARE
+# PROJECT MANAGER
 
-A software tool for creating campaigns and sending personalized messages to a specific group of customers filtered by certain rules at once.
+A software tool for creating for creating and managing projects and task incluing customised campaign messages
 
 
 ## Installation
